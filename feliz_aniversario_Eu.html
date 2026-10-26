@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Feliz Aniversário, Eunice</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:light;--brown:#d81b60;--green:#e91e8c;--cream:#ffe4ec;--line:#f7b6cb;--red:#e0112b}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;background:#fff}
+body{margin:0;background:#fff;font-family:"Cormorant Garamond",Georgia,serif;color:var(--brown);overflow-x:hidden}
+body.locked{overflow:hidden;height:100vh}
+::selection{background:#f9a8c4;color:#fff}
+
+/* ---------- CORAÇÃO A BATER ---------- */
+.hrt{flex:none;width:clamp(46px,12vw,62px);height:clamp(46px,12vw,62px);fill:var(--red);filter:drop-shadow(0 4px 6px rgba(224,17,43,.35));animation:beat 1.1s ease-in-out infinite;transform-origin:center}
+@keyframes beat{0%,100%{transform:scale(1)}15%{transform:scale(1.22)}30%{transform:scale(1)}45%{transform:scale(1.15)}60%{transform:scale(1)}}
+
+/* ---------- TELA INICIAL ---------- */
+#cover{position:fixed;inset:0;z-index:100;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;gap:10px;transition:opacity .9s ease}
+#cover.hide{opacity:0;pointer-events:none}
+#cover .avatar{width:clamp(130px,38vw,190px);height:clamp(130px,38vw,190px);border-radius:50%;object-fit:cover;object-position:top;border:4px solid var(--line);box-shadow:0 8px 24px rgba(233,30,140,.25);animation:float 2.8s ease-in-out infinite}
+#cover .small{font-size:clamp(20px,5vw,26px);font-style:italic;margin:0}
+#cover .name{font-size:clamp(40px,11vw,68px);font-weight:600;font-style:italic;margin:0;line-height:1.05}
+#open{margin-top:14px;font-family:inherit;font-size:clamp(24px,6vw,30px);font-weight:600;letter-spacing:.08em;color:#fff;background:var(--green);border:0;border-radius:999px;padding:12px 44px;cursor:pointer;box-shadow:0 6px 18px rgba(233,30,140,.35);transition:transform .2s ease}
+#open:active{transform:scale(.96)}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+
+/* ---------- BOTÃO DE MÚSICA ---------- */
+#mus{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:150;width:54px;height:54px;border-radius:50%;border:1px solid var(--line);background:var(--cream);font-size:26px;line-height:1;cursor:pointer;box-shadow:0 4px 14px rgba(233,100,140,.3);display:flex;align-items:center;justify-content:center;padding:0}
+#mus.play{animation:pulse 1.8s ease-in-out infinite}
+#mus.off::after{content:"";position:absolute;width:34px;height:3px;background:var(--brown);transform:rotate(-45deg);border-radius:2px}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+
+/* ---------- INTRODUÇÃO ---------- */
+#hero{position:relative;width:100%;height:100vh;height:100dvh;cursor:pointer;overflow:hidden;background:#fff}
+#rain{position:absolute;inset:0;width:100%;height:100%;display:block}
+#msg{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 24px;gap:14px;pointer-events:none}
+#glow{position:absolute;left:50%;top:50%;width:min(96vw,720px);height:68%;transform:translate(-50%,-50%);background:radial-gradient(closest-side,#fff 58%,rgba(255,255,255,0))}
+.l{position:relative;opacity:0;transition:opacity 1.2s ease;text-wrap:balance;margin:0}
+.on{opacity:1}
+#cd{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);font-size:clamp(110px,32vw,220px);font-weight:600;transition:opacity .35s ease}
+#t1{font-size:clamp(42px,12vw,80px);font-style:italic;font-weight:600;line-height:1.05}
+#t2{font-size:clamp(25px,6.6vw,42px);font-weight:500;line-height:1.15}
+#t3{font-size:clamp(26px,7vw,44px);font-weight:500;letter-spacing:.06em}
+#t4{font-size:clamp(19px,4.8vw,27px);font-style:italic;max-width:520px;line-height:1.35}
+#hint{position:absolute;bottom:calc(18px + env(safe-area-inset-bottom,0px));left:0;right:0;text-align:center;font-size:17px;font-style:italic;transition:opacity 1s ease;pointer-events:none}
+#hint .arrow{display:block;font-size:26px;font-style:normal;animation:bounce 1.6s ease-in-out infinite}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(7px)}}
+
+/* ---------- SECÇÕES AO DESLIZAR ---------- */
+section.block{max-width:760px;margin:0 auto;padding:64px 22px 24px;background:#fff}
+h2{font-size:clamp(32px,8vw,48px);font-style:italic;font-weight:600;text-align:center;margin:0 0 6px;line-height:1.1}
+.sub{text-align:center;font-size:clamp(18px,4.6vw,22px);font-style:italic;margin:0 0 30px;opacity:.9}
+.divider{width:60px;height:2px;background:var(--green);margin:0 auto 34px;border-radius:2px}
+
+/* Cartão: coração grande de um lado, texto do outro */
+.card{display:flex;align-items:center;gap:16px;background:var(--cream);border:1px solid var(--line);border-radius:18px;padding:22px 20px;margin:0 0 20px;font-size:clamp(20px,5vw,26px);line-height:1.4;text-align:left;box-shadow:0 4px 14px rgba(233,100,140,.18)}
+.card .tx{flex:1;min-width:0}
+.rv{opacity:0;transform:translateY(26px);transition:opacity 1s ease,transform 1s ease}
+.rv.in{opacity:1;transform:none}
+
+/* ---------- FOTO ---------- */
+.photo{margin:0 auto 10px;max-width:340px;background:var(--cream);border:1px solid var(--line);border-radius:22px;padding:12px;box-shadow:0 8px 24px rgba(233,100,140,.25)}
+.photo img{display:block;width:100%;aspect-ratio:3/4;object-fit:cover;object-position:top;border-radius:14px}
+.photo figcaption{display:flex;align-items:center;justify-content:center;gap:10px;font-size:clamp(20px,5vw,25px);font-style:italic;padding:12px 6px 4px}
+.photo figcaption .hrt{width:36px;height:36px}
+
+/* ---------- VERSÍCULO (foto por cima, texto por baixo) ---------- */
+.verse{max-width:420px;margin:0 auto;display:flex;flex-direction:column;align-items:center;text-align:center;background:var(--cream);border:1px solid var(--line);border-radius:24px;padding:16px 16px 26px;box-shadow:0 8px 24px rgba(233,100,140,.25)}
+.verse img{display:block;width:100%;aspect-ratio:3/4;object-fit:cover;object-position:top;border-radius:16px;margin-bottom:20px}
+.verse .hrt{width:44px;height:44px;margin-bottom:12px}
+.verse .vt{font-size:clamp(21px,5.4vw,27px);font-style:italic;line-height:1.45;margin:0 0 14px;padding:0 6px}
+.verse .vr{font-size:clamp(19px,4.8vw,23px);font-weight:600;letter-spacing:.06em;margin:0}
+
+/* ---------- CALENDÁRIO ---------- */
+.cal{background:var(--cream);border:1px solid var(--line);border-radius:18px;padding:18px 14px;margin:0 auto 26px;max-width:420px;box-shadow:0 4px 14px rgba(233,100,140,.18)}
+.cal h3{margin:0 0 12px;text-align:center;font-size:clamp(24px,6vw,30px);font-weight:600;text-transform:capitalize}
+.grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center}
+.grid .dw{font-size:15px;font-weight:600;opacity:.75}
+.grid .d{font-size:clamp(18px,4.6vw,22px);padding:6px 0;border-radius:10px}
+.grid .bd{background:var(--green);color:#fff;font-weight:600;box-shadow:0 0 0 3px rgba(233,30,140,.25)}
+.grid .td{outline:2px solid var(--brown);outline-offset:-2px}
+#next{display:flex;align-items:center;justify-content:center;gap:12px;text-align:left;font-size:clamp(20px,5vw,25px);font-style:italic;margin:0 0 30px}
+
+/* ---------- CONTADOR (quadrados) ---------- */
+.counter{display:grid;grid-template-columns:repeat(auto-fit,minmax(96px,1fr));gap:10px;margin:0 0 18px}
+.u{background:var(--cream);border:1px solid var(--line);border-radius:14px;padding:12px 4px;text-align:center;box-shadow:0 3px 10px rgba(233,100,140,.12)}
+.u b{display:block;font-size:clamp(32px,8vw,44px);font-weight:600;line-height:1;font-variant-numeric:tabular-nums;color:var(--green)}
+.u span{font-size:17px;text-transform:uppercase;letter-spacing:.08em}
+
+/* Totais vividos (também em quadrados) */
+.tot-title{display:flex;align-items:center;justify-content:center;gap:12px;font-size:clamp(20px,5vw,25px);font-style:italic;margin:10px 0 14px}
+.counter.tot{grid-template-columns:repeat(2,1fr)}
+.counter.tot .u{padding:14px 6px}
+.counter.tot .u b{font-size:clamp(22px,6vw,32px);overflow-wrap:anywhere}
+
+footer{text-align:center;padding:30px 20px calc(50px + env(safe-area-inset-bottom,0px));font-size:19px;font-style:italic;background:#fff;color:var(--brown)}
+
+@media (prefers-reduced-motion:reduce){.l,.rv{transition-duration:.01s}#cover .avatar,#hint .arrow,#mus.play,.hrt{animation:none}html{scroll-behavior:auto}}
+</style>
+</head>
+<body class="locked">
+
+<!-- Desenho do coração (reutilizado em todo o código) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="heart" viewBox="0 0 24 24">
+    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+  </symbol>
+</svg>
+
+<!-- MÚSICA (ficheiro na mesma pasta), com tocar automático ao abrir -->
+<audio id="aud" loop autoplay preload="auto" playsinline>
+  <source src="Ayra-Starr-Ft-Zayn-Heaven-Baby-(TrendySongz.com).mp3.mpeg" type="audio/mpeg">
+  <source src="Ayra-Starr-Ft-Zayn-Heaven-Baby-%28TrendySongz.com%29.mp3.mpeg" type="audio/mpeg">
+  <source src="Ayra-Starr-Ft-Zayn-Heaven-Baby-(TrendySongz.com).mp3" type="audio/mpeg">
+  <source src="musica.mp3" type="audio/mpeg">
+</audio>
+
+<!-- TELA INICIAL -->
+<div id="cover">
+  <img class="avatar" src="1EU.jpeg" alt="Eunice" onerror="this.style.display='none'">
+  <svg class="hrt"><use href="#heart"/></svg>
+  <p class="small">Uma mensagem especial para</p>
+  <p class="name">Eunice</p>
+  <button id="open" type="button">Abrir</button>
+</div>
+
+<button id="mus" type="button" class="off" aria-label="Ligar ou desligar a música">🎵</button>
+
+<!-- INTRODUÇÃO -->
+<div id="hero">
+  <canvas id="rain" aria-hidden="true"></canvas>
+  <div id="msg" role="main">
+    <div id="glow"></div>
+    <div id="cd" class="l" aria-hidden="true"></div>
+    <h1 id="t1" class="l">Feliz Aniversário</h1>
+    <p id="t2" class="l">Eunice Paulo Zita</p>
+    <p id="t3" class="l">27/10/2026 · 18 anos</p>
+    <p id="t4" class="l">Que esta nova fase traga muita saúde, alegria e conquistas.</p>
+  </div>
+  <div id="hint" class="l">Toque para repetir · deslize para baixo<span class="arrow">↓</span></div>
+</div>
+
+<!-- MENSAGENS DE CARINHO -->
+<section class="block">
+  <h2 class="rv">Mensagens de carinho</h2>
+  <p class="sub rv">Palavras escritas só para ti</p>
+  <div class="divider rv"></div>
+
+  <figure class="photo rv">
+    <img src="1EU.jpeg" alt="Eunice Paulo Zita" onerror="this.parentNode.style.display='none'">
+    <figcaption><svg class="hrt"><use href="#heart"/></svg>Eunice, 18 anos</figcaption>
+  </figure>
+  <div style="height:26px"></div>
+
+  <div class="card rv"><svg class="hrt"><use href="#heart"/></svg><span class="tx">Hoje celebramos a tua vida. Que cada dia que passou tenha deixado boas memórias, e que os que vêm sejam ainda mais bonitos.</span></div>
+  <div class="card rv"><svg class="hrt"><use href="#heart"/></svg><span class="tx">Tu mereces todo o carinho do mundo. Que a saúde nunca te falte e a alegria te acompanhe em cada passo.</span></div>
+  <div class="card rv"><svg class="hrt"><use href="#heart"/></svg><span class="tx">Que os teus sonhos se realizem, que as portas certas se abram e que nunca falte quem torça por ti.</span></div>
+  <div class="card rv"><svg class="hrt"><use href="#heart"/></svg><span class="tx">Obrigado por seres alguém tão especial. A tua presença torna os dias mais leves e os momentos mais felizes.</span></div>
+  <div class="card rv"><svg class="hrt"><use href="#heart"/></svg><span class="tx">Que Deus te abençoe, te proteja e te dê força para vencer todos os desafios desta nova fase.</span></div>
+</section>
+
+<!-- CALENDÁRIO E TEMPO DE VIDA -->
+<section class="block">
+  <h2 class="rv">O teu tempo de vida</h2>
+  <p class="sub rv">Cada segundo conta, e este relógio nunca pára</p>
+  <div class="divider rv"></div>
+
+  <div class="cal rv">
+    <h3 id="calTitle"></h3>
+    <div class="grid" id="calGrid"></div>
+  </div>
+  <div id="next" class="rv"><svg class="hrt"><use href="#heart"/></svg><span id="nextTx"></span></div>
+
+  <div class="counter rv">
+    <div class="u"><b id="cy">0</b><span>anos</span></div>
+    <div class="u"><b id="cmo">0</b><span>meses</span></div>
+    <div class="u"><b id="cw">0</b><span>semanas</span></div>
+    <div class="u"><b id="cd2">0</b><span>dias</span></div>
+    <div class="u"><b id="ch">00</b><span>horas</span></div>
+    <div class="u"><b id="cmi">00</b><span>minutos</span></div>
+    <div class="u"><b id="cs">00</b><span>segundos</span></div>
+  </div>
+
+  <div class="tot-title rv"><svg class="hrt"><use href="#heart"/></svg><span>Já viveste, no total:</span></div>
+  <div class="counter tot rv">
+    <div class="u"><b id="td">0</b><span>dias</span></div>
+    <div class="u"><b id="th">0</b><span>horas</span></div>
+    <div class="u"><b id="tm">0</b><span>minutos</span></div>
+    <div class="u"><b id="ts">0</b><span>segundos</span></div>
+  </div>
+</section>
+
+<!-- DUAS MENSAGENS FINAIS -->
+<section class="block">
+  <div class="card rv"><svg class="hrt"><use href="#heart"/></svg><span class="tx">Que este novo ciclo comece com paz no coração, e que cada segundo que contas seja vivido com amor e gratidão.</span></div>
+  <div class="card rv"><svg class="hrt"><use href="#heart"/></svg><span class="tx">Parabéns, Eunice! Que os teus 18 anos sejam o começo de uma história linda, cheia de saúde, alegria e conquistas. Feliz aniversário!</span></div>
+</section>
+
+<!-- VERSÍCULO: IMAGEM POR CIMA, TEXTO POR BAIXO -->
+<section class="block">
+  <div class="verse rv">
+    <img src="1EU.jpeg" alt="Eunice Paulo Zita" onerror="this.style.display='none'">
+    <svg class="hrt"><use href="#heart"/></svg>
+    <p class="vt">“O Senhor te guardará de todo o mal; ele guardará a tua alma. O Senhor guardará a tua entrada e a tua saída, desde agora e para sempre.”</p>
+    <p class="vr">Salmo 121:7-8</p>
+  </div>
+</section>
+
+<footer>Feito com carinho pelo seu Admirador Sansao Xerinda</footer>
+
+<script>
+/* ===== CONFIGURAÇÃO ===== */
+var BIRTH=new Date(2008,9,27,0,0,0);   // nasceu a 27/10/2008 (mês 9 = outubro)
+var BDAY_MONTH=9, BDAY_DAY=27;          // aniversário: 27 de outubro
+
+(function(){
+  function $(id){return document.getElementById(id);}
+
+  /* ===== Música automática (ficheiro local, em repetição) ===== */
+  var aud=$('aud'),mus=$('mus'),wantPlay=true;   // wantPlay = queremos música (até o utilizador pausar)
+  function btn(on){mus.classList.toggle('play',on);mus.classList.toggle('off',!on);}
+  aud.addEventListener('playing',function(){btn(true);});
+  aud.addEventListener('pause',function(){btn(false);});
+  aud.volume=1;
+
+  function playMusic(){
+    if(!wantPlay||!aud.paused)return;
+    var p=aud.play();
+    if(p&&p.catch)p.catch(function(){});   // se o navegador bloquear, tenta no 1.º toque
+  }
+
+  // 1) Tenta tocar logo ao abrir o ficheiro
+  playMusic();
+  window.addEventListener('load',playMusic);
+  aud.addEventListener('canplay',playMusic);
+  aud.addEventListener('loadeddata',playMusic);
+  document.addEventListener('visibilitychange',function(){if(!document.hidden)playMusic();});
+
+  // 2) Se foi bloqueado, qualquer 1.º toque/clique/tecla/deslize arranca a música
+  function unlock(e){
+    if(e&&e.target&&e.target.closest&&e.target.closest('#mus'))return;   // o botão 🎵 trata de si
+    playMusic();
+  }
+  ['pointerdown','touchstart','touchend','click','keydown','wheel'].forEach(function(ev){
+    document.addEventListener(ev,unlock,{passive:true,capture:true});
+  });
+  window.addEventListener('scroll',playMusic,{passive:true});
+
+  // Botão 🎵: pausar / retomar
+  mus.addEventListener('click',function(e){
+    e.stopPropagation();
+    if(aud.paused){
+      wantPlay=true;
+      var p=aud.play();
+      if(p&&p.catch)p.catch(function(){
+        alert('Não encontrei a música. Confirme que o ficheiro de áudio está na mesma pasta do html.');
+      });
+    }else{wantPlay=false;aud.pause();}
+  });
+
+  /* ===== Chuva de letras rosa ===== */
+  var hero=$('hero'),cv=$('rain'),ctx=cv.getContext('2d');
+  var chars='FELIZANIVERSÁRIOEUNICEPAULOZITA0123456789';
+  var fs=18,W,H,cols,ys,pr;
+  var slow=window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+  function size(){
+    var r=cv.getBoundingClientRect(),d=window.devicePixelRatio||1;
+    W=r.width;H=r.height;cv.width=W*d;cv.height=H*d;
+    ctx.setTransform(d,0,0,d,0,0);ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
+    cols=Math.ceil(W/fs);ys=[];pr=[];
+    for(var i=0;i<cols;i++){ys.push(H+Math.random()*H);pr.push(0.55+Math.random()*0.45);}
+  }
+  function step(){
+    ctx.fillStyle='rgba(255,255,255,0.08)';ctx.fillRect(0,0,W,H);
+    ctx.font=fs+'px "Courier New",monospace';ctx.textBaseline='top';
+    for(var i=0;i<cols;i++){
+      if(Math.random()>pr[i])continue;
+      ctx.fillStyle=Math.random()>0.9?'#d81b60':'#f06292';
+      ctx.fillText(chars.charAt(Math.floor(Math.random()*chars.length)),i*fs,ys[i]);
+      ys[i]-=fs;
+      if(ys[i]<-fs*2)ys[i]=H+Math.random()*H*0.6;
+    }
+  }
+  var last=0;
+  function loop(t){
+    if(t-last>(slow?140:60)){step();last=t;}
+    requestAnimationFrame(loop);
+  }
+  size();
+  window.addEventListener('resize',size);
+  requestAnimationFrame(loop);
+
+  /* ===== Sequência de texto da introdução ===== */
+  var timers=[];
+  function at(ms,fn){timers.push(setTimeout(fn,ms));}
+  function run(){
+    timers.forEach(clearTimeout);timers=[];
+    ['cd','t1','t2','t3','t4','hint'].forEach(function(i){$(i).classList.remove('on');});
+    [3,2,1].forEach(function(n,i){
+      at(300+i*1000,function(){$('cd').textContent=n;$('cd').classList.add('on');});
+      at(1000+i*1000,function(){$('cd').classList.remove('on');});
+    });
+    at(3500,function(){$('t1').classList.add('on');});
+    at(5200,function(){$('t2').classList.add('on');});
+    at(6800,function(){$('t3').classList.add('on');});
+    at(8600,function(){$('t4').classList.add('on');});
+    at(11000,function(){$('hint').classList.add('on');});
+  }
+  hero.addEventListener('click',run);
+
+  /* ===== Botão Abrir ===== */
+  $('open').addEventListener('click',function(){
+    $('cover').classList.add('hide');
+    document.body.classList.remove('locked');
+    window.scrollTo(0,0);
+    run();
+    playMusic();
+    setTimeout(function(){$('cover').style.display='none';},950);
+  });
+
+  /* ===== Aparecer ao deslizar ===== */
+  var items=document.querySelectorAll('.rv');
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});
+    },{threshold:0.15});
+    items.forEach(function(el){io.observe(el);});
+  }else{items.forEach(function(el){el.classList.add('in');});}
+
+  /* ===== Idade e contador (atualiza sozinho a cada segundo) ===== */
+  function addMonths(d,k){
+    var m=d.getMonth()+k,ny=d.getFullYear()+Math.floor(m/12),nm=((m%12)+12)%12;
+    var last=new Date(ny,nm+1,0).getDate();
+    return new Date(ny,nm,Math.min(d.getDate(),last),d.getHours(),d.getMinutes(),d.getSeconds());
+  }
+  function pad(n){return n<10?'0'+n:''+n;}
+  function fmt(n){return n.toLocaleString('pt-PT');}
+  function tick(){
+    var now=new Date();
+    var months=(now.getFullYear()-BIRTH.getFullYear())*12+(now.getMonth()-BIRTH.getMonth());
+    if(addMonths(BIRTH,months)>now)months--;
+    var anchor=addMonths(BIRTH,months);
+    var years=Math.floor(months/12),mo=months%12;
+    var s=Math.floor((now-anchor)/1000);
+    var days=Math.floor(s/86400);s%=86400;
+    var h=Math.floor(s/3600);s%=3600;
+    var mi=Math.floor(s/60),sec=s%60;
+    var weeks=Math.floor(days/7),d=days%7;
+    $('cy').textContent=years;
+    $('cmo').textContent=mo;
+    $('cw').textContent=weeks;
+    $('cd2').textContent=d;
+    $('ch').textContent=pad(h);
+    $('cmi').textContent=pad(mi);
+    $('cs').textContent=pad(sec);
+    var diff=now-BIRTH;
+    $('td').textContent=fmt(Math.floor(diff/86400000));
+    $('th').textContent=fmt(Math.floor(diff/3600000));
+    $('tm').textContent=fmt(Math.floor(diff/60000));
+    $('ts').textContent=fmt(Math.floor(diff/1000));
+  }
+  tick();setInterval(tick,1000);
+
+  /* ===== Calendário do mês de aniversário ===== */
+  (function(){
+    var now=new Date(),today=new Date(now.getFullYear(),now.getMonth(),now.getDate());
+    var nb=new Date(now.getFullYear(),BDAY_MONTH,BDAY_DAY);
+    if(nb<today)nb=new Date(now.getFullYear()+1,BDAY_MONTH,BDAY_DAY);
+    var age=nb.getFullYear()-BIRTH.getFullYear();
+    var meses=['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+    var y=nb.getFullYear(),m=nb.getMonth();
+    $('calTitle').textContent=meses[m]+' de '+y;
+    var g=$('calGrid'),html='';
+    ['D','S','T','Q','Q','S','S'].forEach(function(w){html+='<div class="dw">'+w+'</div>';});
+    var first=new Date(y,m,1).getDay(),total=new Date(y,m+1,0).getDate();
+    for(var i=0;i<first;i++)html+='<div></div>';
+    for(var d=1;d<=total;d++){
+      var cls='d';
+      if(d===BDAY_DAY)cls+=' bd';
+      if(today.getFullYear()===y&&today.getMonth()===m&&today.getDate()===d)cls+=' td';
+      html+='<div class="'+cls+'">'+d+'</div>';
+    }
+    g.innerHTML=html;
+    var left=Math.round((nb-today)/86400000);
+    $('nextTx').textContent=left===0?'Hoje é o teu dia! Fazes '+age+' anos!':
+      'Faltam '+left+' dias para os teus '+age+' anos.';
+  })();
+})();
+</script>
+</body>
+</html>
